@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌸 K-Pop Soft Lo-Fi Study Planner</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #fbc5d8 0%, #d8b4f8 50%, #aed9e6 100%);
+            padding: 40px 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Contenedor con efecto Glassmorphism (Vidrio Estético) */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(216, 180, 248, 0.3);
+        }
+
+        /* Encabezado Estético */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            color: #4a3b5c;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+            text-shadow: 1px 1px 0px rgba(255,255,255,0.8);
+        }
+
+        .header p {
+            font-size: 12px;
+            color: #7b6f93;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 600;
+        }
+
+        .date-container {
+            margin-top: 15px;
+        }
+
+        .date-input {
+            font-size: 14px;
+            padding: 8px 15px;
+            border: 2px solid rgba(216, 180, 248, 0.5);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #4a3b5c;
+            outline: none;
+            text-align: center;
+        }
+
+        /* Grid de Secciones */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        @media (max-width: 768px) {
+            .grid { grid-template-columns: 1fr; }
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 18px;
+            padding: 22px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.02);
+            border: 1px solid rgba(255,255,255,0.8);
+            transition: transform 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-2px);
+        }
+
+        .section h2 {
+            font-size: 15px;
+            color: #4a3b5c;
+            margin-bottom: 15px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* 1. Lista de Metas (Daily Goals) */
+        .goals-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .goal-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            background: #fbf8ff;
+            border-radius: 12px;
+            border: 1px solid #f3ebff;
+            transition: all 0.2s ease;
+        }
+
+        .goal-item.completed {
+            background: #e8f5e9;
+            opacity: 0.7;
+        }
+
+        .goal-item.completed .goal-input {
+            text-decoration: line-through;
+            color: #999;
+        }
+
+        .goal-checkbox {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #ff80ab;
+        }
+
+        .goal-input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            font-size: 13px;
+            color: #5a4b6e;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        /* 2. Pomodoro Tracker Interactivo */
+        .pomodoro-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .pomodoro-box {
+            aspect-ratio: 1;
+            border: 2px dashed #d8b4f8;
+            border-radius: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: all 0.2s ease;
+            background: #fff;
+        }
+
+        .pomodoro-box:hover {
+            transform: scale(1.05);
+            border-color: #ff80ab;
+            background: #fff0f5;
+        }
+
+        /* Clase que se activa al hacer clic */
+        .pomodoro-box.completed {
+            background: linear-gradient(135deg, #ff94b8 0%, #ff80ab 100%);
+            border-style: solid;
+            border-color: #ff80ab;
+            box-shadow: 0 4px 10px rgba(255, 128, 171, 0.3);
+        }
+
+        .pomodoro-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            font-size: 11px;
+            color: #7b6f93;
+            text-align: center;
+            padding-top: 10px;
+            border-top: 1px solid #f3ebff;
+        }
+
+        .stat-number {
+            font-size: 18px;
+            font-weight: 800;
+            color: #ff80ab;
+        }
+
+        /* 3. Energy Tracker */
+        .energy-scale {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .energy-btn {
+            flex: 1;
+            padding: 10px 5px;
+            border: 2px solid #e8e2f0;
+            border-radius: 12px;
+            background: white;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 700;
+            color: #7b6f93;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .energy-btn:hover { transform: translateY(-2px); }
+
+        /* Estados seleccionados individuales */
+        .energy-btn.low.active { background: #ffe3e8; color: #ff5252; border-color: #ff5252; }
+        .energy-btn.medium.active { background: #fff1dc; color: #ff9800; border-color: #ff9800; }
+        .energy-btn.high.active { background: #e3f2fd; color: #2196f3; border-color: #2196f3; }
+
+        /* 4. Lo-Fi Thoughts */
+        .lofi-input {
+            width: 100%;
+            padding: 10px;
+            background: #fbf8ff;
+            border-radius: 12px;
+            border: 1px solid #f3ebff;
+            font-size: 13px;
+            color: #5a4b6e;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .lofi-input:focus {
+            border-color: #ff80ab;
+            background: #fff0f5;
+        }
+
+        /* 5. Notas de Motivación (Ocupa todo el ancho abajo) */
+        .motivation-section {
+            grid-column: 1 / -1;
+        }
+
+        .motivation-box {
+            width: 100%;
+            height: 100px;
+            border: 1px solid #f3ebff;
+            background: #fbf8ff;
+            border-radius: 12px;
+            padding: 12px;
+            font-size: 13px;
+            color: #5a4b6e;
+            resize: none;
+            outline: none;
+            font-style: italic;
+            transition: all 0.2s ease;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        .motivation-box:focus {
+            border-color: #ff80ab;
+            background: #fff0f5;
+        }
+
+        /* Footer / Info */
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 11px;
+            color: #7b6f93;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        /* Print styles */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+                border: none;
+                background: white;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Encabezado -->
+        <div class="header">
+            <h1>🌸 Focus & Bloom</h1>
+            <p>High-Performance Study Planner</p>
+            <div class="date-container">
+                <input type="date" class="date-input" id="dateInput">
+            </div>
+        </div>
+
+        <div class="grid">
+            <!-- Sección Metas -->
+            <div class="section">
+                <h2><span class="icon">✨</span> Daily Objectives</h2>
+                <div class="goals-list" id="goalsList">
+                    <div class="goal-item">
+                        <input type="checkbox" class="goal-checkbox" onchange="toggleGoalCompletion(this)">
+                        <input type="text" class="goal-input" placeholder="Main focus today...">
+                    </div>
+                    <div class="goal-item">
+                        <input type="checkbox" class="goal-checkbox" onchange="toggleGoalCompletion(this)">
+                        <input type="text" class="goal-input" placeholder="Secondary task...">
+                    </div>
+                    <div class="goal-item">
+                        <input type="checkbox" class="goal-checkbox" onchange="toggleGoalCompletion(this)">
+                        <input type="text" class="goal-input" placeholder="Extra task...">
+                    </div>
+                    <div class="goal-item">
+                        <input type="checkbox" class="goal-checkbox" onchange="toggleGoalCompletion(this)">
+                        <input type="text" class="goal-input" placeholder="Don't forget to...">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección Pomodoro -->
+            <div class="section">
+                <h2><span class="icon">⏱️</span> Pomodoro Sessions</h2>
+                <div class="pomodoro-grid" id="pomodoroGrid">
+                    <div class="pomodoro-box" onclick="togglePomo(this)">🌸</div>
+                    <div class="pomodoro-box" onclick="togglePomo(this)">🌸</div>
+                    <div class="pomodoro-box" onclick="togglePomo(this)">🌸</div>
+                    <div class="pomodoro-box" onclick="togglePomo(this)">🌸</div>
+                    <div class="pomodoro-box" onclick="togglePomo(this)">🌸</div>
+                    <div class="pomodoro-box" onclick="togglePomo(this)">🌸</div>
+                    <div class="pomodoro-box" onclick="togglePomo(this)">🌸</div>
+                    <div class="pomodoro-box" onclick="togglePomo(this)">🌸</div>
+                </div>
+                <div class="pomodoro-stats">
+                    <div>
+                        <div class="stat-number" id="pomodoroCount">0</div>
+                        <div>Completed</div>
+                    </div>
+                    <div>
+                        <div class="stat-number" id="pomodoroMinutes">0</div>
+                        <div>Minutes</div>
+                    </div>
+                </div>
+                <p style="font-size: 11px; color:#99a; text-align:center; margin-top:10px;">Click the flowers to complete a 25min block!</p>
+            </div>
+
+            <!-- Sección Energía -->
+            <div class="section">
+                <h2><span class="icon">⚡</span> Energy Tracker</h2>
+                <div class="energy-scale">
+                    <button class="energy-btn low" onclick="selectEnergy(this, 'low')">☕ Low</button>
+                    <button class="energy-btn medium" onclick="selectEnergy(this, 'medium')">🧉 Medium</button>
+                    <button class="energy-btn high" onclick="selectEnergy(this, 'high')">🔥 High</button>
+                </div>
+                <p style="font-size: 11px; color: #99a; line-height: 1.4;">
+                    <strong>💡 Tip:</strong> Low = review & organize. Medium = balanced work. High = tackle difficult subjects!
+                </p>
+            </div>
+
+            <!-- Sección Lo-Fi Thoughts -->
+            <div class="section">
+                <h2><span class="icon">🎧</span> Lo-Fi Thoughts</h2>
+                <input type="text" class="lofi-input" id="lofiQuote" placeholder="Your favorite K-Pop lyrics or focus quote today...">
+            </div>
+
+            <!-- Sección Notas Largas -->
+            <div class="section motivation-section">
+                <h2><span class="icon">📝</span> Study Notes & Reflection</h2>
+                <textarea class="motivation-box" id="studyNotes" placeholder="Write down what went well today or things to improve tomorrow..."></textarea>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>✨ Made by Elix Sounds | Press play. Find your focus. 🌙</p>
+        </div>
+    </div>
+
+    <!-- Script de interactividad -->
+    <script>
+        // Set today's date by default
+        document.getElementById('dateInput').valueAsDate = new Date();
+
+        function togglePomo(element) {
+            element.classList.toggle('completed');
+            updatePomodoroStats();
+            saveData();
+        }
+
+        function updatePomodoroStats() {
+            const completed = document.querySelectorAll('.pomodoro-box.completed').length;
+            document.getElementById('pomodoroCount').textContent = completed;
+            document.getElementById('pomodoroMinutes').textContent = completed * 25;
+        }
+
+        function selectEnergy(button, level) {
+            const buttons = button.parentElement.querySelectorAll('.energy-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            saveData();
+        }
+
+        function toggleGoalCompletion(checkbox) {
+            const goalItem = checkbox.parentElement;
+            goalItem.classList.toggle('completed', checkbox.checked);
+            saveData();
+        }
+
+        // Save data to localStorage
+        function saveData() {
+            const data = {
+                date: document.getElementById('dateInput').value,
+                goals: Array.from(document.querySelectorAll('.goal-item')).map(item => ({
+                    text: item.querySelector('.goal-input').value,
+                    completed: item.querySelector('.goal-checkbox').checked
+                })),
+                pomodoros: Array.from(document.querySelectorAll('.pomodoro-box')).map(box => 
+                    box.classList.contains('completed')
+                ),
+                energy: document.querySelector('.energy-btn.active')?.textContent || '',
+                lofiQuote: document.getElementById('lofiQuote').value,
+                studyNotes: document.getElementById('studyNotes').value
+            };
+            localStorage.setItem('studyPlannerData', JSON.stringify(data));
+        }
+
+        // Load data from localStorage
+        function loadData() {
+            const saved = localStorage.getItem('studyPlannerData');
+            if (saved) {
+                const data = JSON.parse(saved);
+                
+                // Load goals
+                const goalInputs = document.querySelectorAll('.goal-input');
+                data.goals.forEach((goal, index) => {
+                    if (goalInputs[index]) {
+                        goalInputs[index].value = goal.text;
+                        const checkbox = goalInputs[index].parentElement.querySelector('.goal-checkbox');
+                        checkbox.checked = goal.completed;
+                        if (goal.completed) {
+                            goalInputs[index].parentElement.classList.add('completed');
+                        }
+                    }
+                });
+
+                // Load pomodoros
+                const pomBoxes = document.querySelectorAll('.pomodoro-box');
+                data.pomodoros.forEach((completed, index) => {
+                    if (completed) {
+                        pomBoxes[index].classList.add('completed');
+                    }
+                });
+
+                // Load other data
+                document.getElementById('lofiQuote').value = data.lofiQuote || '';
+                document.getElementById('studyNotes').value = data.studyNotes || '';
+
+                updatePomodoroStats();
+            }
+        }
+
+        // Load data on page load
+        window.addEventListener('load', loadData);
+
+        // Auto-save every 2 seconds
+        setInterval(saveData, 2000);
+    </script>
+</body>
+</html>
